@@ -32,7 +32,7 @@ HANKO_SEC (秘密にするハンコ鍵）<br>
 <input type=text id=signedmes><br>
 
 <script type="module">
-import { ed25519 } from "https://code4sabae.github.io/js/ed25519.js";
+import { Ed25519 } from "https://code4sabae.github.io/js/Ed25519.js";
 import { hex } from "https://code4sabae.github.io/js/hex.js";
 
 btn.onclick = () => {
@@ -41,7 +41,7 @@ btn.onclick = () => {
   const pubhex = pub.value;
   const pubbin = hex.toBin(pubhex);
   const msg = new TextEncoder('utf-8').encode(mes.value);
-  const sig = ed25519.sign(msg, pubbin, pribin);
+  const sig = Ed25519.sign(msg, pubbin, pribin);
   signedmes.value = hex.fromBin(sig);
 };
 
@@ -59,7 +59,7 @@ btn.onclick = () => {
 
 <hr>
 App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
-Lib: <a href=https://github.com/canonchain/ed25519-wasm>ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/ed25519.js>ed25519.js ES module version</a><br>
+Lib: <a href=https://github.com/canonchain/ed25519-wasm>ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/Ed25519.js>Ed25519.js ES module version</a><br>
 
 </body>
 <html>

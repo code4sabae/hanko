@@ -19,12 +19,12 @@ HANKO_SEC (秘密にするハンコ鍵）<br>
 <input type=text id=pri><br>
 
 <script type="module">
-import { ed25519 } from "https://code4sabae.github.io/js/ed25519.js";
+import { Ed25519 } from "https://code4sabae.github.io/js/Ed25519.js";
 import { hex } from "https://code4sabae.github.io/js/hex.js";
 
 btn.onclick = () => {
-  const seed = ed25519.createSeed();
-  const keys = ed25519.createKeyPair(seed);
+  const seed = Ed25519.createSeed();
+  const keys = Ed25519.createKeyPair(seed);
 
   console.log('keys', keys);
   const pubpem = hex.fromBin(keys.publicKey);
@@ -49,7 +49,7 @@ btn.onclick = () => {
 
 <hr>
 App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
-Lib: <a href=https://github.com/canonchain/ed25519-wasm>ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/ed25519.js>ed25519.js ES module version</a><br>
+Lib: <a href=https://github.com/canonchain/Ed25519-wasm>Ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/Ed25519.js>Ed25519.js ES module version</a><br>
 
 </body>
 <html>
