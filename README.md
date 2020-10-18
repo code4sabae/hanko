@@ -1,4 +1,7 @@
 # HANKO
+デモ  
+https://code4sabae.github.io/hanko/hankomaker.html  
+
 デジタル時代のHANKO(ed25519バージョン）  
 https://fukuno.jig.jp/3006  
 
