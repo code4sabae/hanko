@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+
+<style>
+textarea {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
+  height: 8em;
+}
+#pri {
+  height: 23em;
+}
+#verify {
+  width: 30em;
+}
+</style>
+
+<h1>HANKOを確認する（電子署名を確認する）</h1>
+
+メッセージ<br>
+<textarea id=mes>
+</textarea><br>
+
+電子署名<br>
+<textarea id=signed>
+</textarea><br>
+
+電子署名した人のHANKO_ID<br>
+<textarea id=pub>
+</textarea><br>
+
+<button id=btn>電子署名をチェック</button><br>
+
+<br>
+<input type="text" id=verify><br>
+
+<script type="module">
+import { RSA } from "https://code4sabae.github.io/js/RSA.js";
+
+btn.onclick = () => {
+  try {
+    const pubpem = pub.value;
+    const pubder = RSA.pem2der('pkcs1-public', pubpem);
+    const txt = mes.value;
+    const sig = signed.value.trim();
+    const result = RSA.verify(pubder, txt, sig);
+    verify.value = result ? "正しい電子署名と確認できました" : "ERROR! おかしな電子署名です";
+  } catch (e) {
+    verify.value = "ERROR! 値が正しく設定されていません";
+  }
+};
+</script>
+<hr>
+<a href=hankomaker.html>HANKOをつくる</a><br>
+<a href=hankosign.html>HANKOを押す（メッセージに電子署名する）</a><br>
+<a href=hankosignchk.html>HANKOを確認する（電子署名を確認する）</a><br>
+
+<hr>
+App: CC BY <a href=https://fukuno.jig.jp/3001>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/rzcoder/node-rsa>rzcoder/node-rsa: Node.js RSA library</a> / <a href=https://qiita.com/poruruba/items/272bdc8f539728d5b076>Javascriptで公開鍵ペア生成・暗号化/復号をしてみた - Qiita</a><br>
+
+</body>
+<html>
+ 

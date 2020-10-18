@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+
+<style>
+textarea {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
+  height: 8em;
+}
+#pri {
+  height: 23em;
+}
+</style>
+
+<h1>HANKOを押す（メッセージに電子署名する）</h1>
+
+HANKO_SEC (秘密にするハンコ鍵）<br>
+<textarea id=pri>
+</textarea><br>
+
+メッセージ<br>
+<textarea id=mes>
+</textarea><br>
+
+<button id=btn>HANKOを押す</button><br>
+
+電子署名<br>
+<textarea id=signedmes>
+</textarea><br>
+
+<script type="module">
+import { RSA } from "https://code4sabae.github.io/js/RSA.js";
+
+btn.onclick = () => {
+  const pripem = pri.value;
+  const prider = RSA.pem2der('pkcs1-private', pripem);
+
+  const txt = mes.value;
+  const sig = RSA.sign(prider, txt);
+  signedmes.value = sig;
+};
+
+</script>
+
+<br>
+次は？<br>
+<a href=hankosignchk.html target=_blank>HANKOを確認する（電子署名を確認する）</a><br>
+
+<hr>
+<a href=hankomaker.html>HANKOをつくる</a><br>
+<a href=hankosign.html>HANKOを押す（メッセージに電子署名する）</a><br>
+<a href=hankosignchk.html>HANKOを確認する（電子署名を確認する）</a><br>
+
+<hr>
+App: CC BY <a href=https://fukuno.jig.jp/3001>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/rzcoder/node-rsa>rzcoder/node-rsa: Node.js RSA library</a> / <a href=https://qiita.com/poruruba/items/272bdc8f539728d5b076>Javascriptで公開鍵ペア生成・暗号化/復号をしてみた - Qiita</a><br>
+
+</body>
+<html>

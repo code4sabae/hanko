@@ -1,10 +1,14 @@
 <!DOCTYPE html><html><head><meta charset="utf-8">
 
 <style>
-input[type="text"] {
+textarea {
   font-size: 80%;
   font-family: monospace;
   width: 50em;
+  height: 8em;
+}
+#pri {
+  height: 23em;
 }
 </style>
 
@@ -13,25 +17,26 @@ input[type="text"] {
 <button id=btn>HANKOを作る</button><br>
 <br>
 HANKO_ID（公開するハンコID）<br>
-<input type=text id=pub><br>
+<textarea id=pub>
+</textarea><br>
 
 HANKO_SEC (秘密にするハンコ鍵）<br>
-<input type=text id=pri><br>
+<textarea id=pri>
+</textarea><br>
 
 <script type="module">
-import { ed25519 } from "https://code4sabae.github.io/js/ed25519.js";
-import { hex } from "https://code4sabae.github.io/js/hex.js";
+import { RSA } from "https://code4sabae.github.io/js/RSA.js";
 
 btn.onclick = () => {
-  const seed = ed25519.createSeed();
-  const keys = ed25519.createKeyPair(seed);
+  const key = RSA.generateKeyPair(1024);
+  console.log('private=', key.private);
+  console.log('public=', key.public);
 
-  console.log('keys', keys);
-  const pubpem = hex.fromBin(keys.publicKey);
+  const pubpem = RSA.der2pem('pkcs1-public', key.public);
   console.log("pubpem", pubpem);
   pub.value = pubpem;
 
-  const pripem = hex.fromBin(keys.secretKey);
+  const pripem = RSA.der2pem('pkcs1-private', key.private);
   console.log("pripem", pripem);
   pri.value = pripem;
 };
@@ -48,8 +53,8 @@ btn.onclick = () => {
 <a href=hankosignchk.html>HANKOを確認する（電子署名を確認する）</a><br>
 
 <hr>
-App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
-Lib: <a href=https://github.com/canonchain/ed25519-wasm>ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/ed25519.js>ed25519.js ES module version</a><br>
+App: CC BY <a href=https://fukuno.jig.jp/3001>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/rzcoder/node-rsa>rzcoder/node-rsa: Node.js RSA library</a> / <a href=https://qiita.com/poruruba/items/272bdc8f539728d5b076>Javascriptで公開鍵ペア生成・暗号化/復号をしてみた - Qiita</a><br>
 
 </body>
 <html>

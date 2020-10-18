@@ -7,11 +7,16 @@ textarea {
   width: 50em;
   height: 8em;
 }
-#pri {
-  height: 23em;
+input[type="text"] {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
 }
 #verify {
   width: 30em;
+  border: 1px solid black;
+  height: 1.2em;
+  padding: .3em;
 }
 </style>
 
@@ -22,33 +27,34 @@ textarea {
 </textarea><br>
 
 電子署名<br>
-<textarea id=signed>
-</textarea><br>
+<input type=text id=signed><br>
 
 電子署名した人のHANKO_ID<br>
-<textarea id=pub>
-</textarea><br>
+<input type=text id=pub><br>
+<br>
 
 <button id=btn>電子署名をチェック</button><br>
 
 <br>
-<input type="text" id=verify><br>
+<div id=verify></div><br>
 
 <script type="module">
-import { RSA } from "https://code4sabae.github.io/js/RSA.js";
+import { ed25519 } from "https://code4sabae.github.io/js/ed25519.js";
+import { hex } from "https://code4sabae.github.io/js/hex.js";
 
 btn.onclick = () => {
   try {
-    const pubpem = pub.value;
-    const pubder = RSA.pem2der('pkcs1-public', pubpem);
-    const txt = mes.value;
-    const sig = signed.value.trim();
-    const result = RSA.verify(pubder, txt, sig);
-    verify.value = result ? "正しい電子署名と確認できました" : "ERROR! おかしな電子署名です";
+    const pubbin = hex.toBin(pub.value);
+    const msg = new TextEncoder('utf-8').encode(mes.value);
+    const sig = hex.toBin(signed.value);
+    console.log(hex.fromBin(sig), hex.fromBin(msg), hex.fromBin(pubbin));
+    const result = ed25519.verify(sig, msg, pubbin);
+    verify.textContent = result ? "正しい電子署名と確認できました" : "ERROR! おかしな電子署名です";
   } catch (e) {
-    verify.value = "ERROR! 値が正しく設定されていません";
+    verify.textContent = "ERROR! 値が正しく設定されていません";
   }
 };
+
 </script>
 <hr>
 <a href=hankomaker.html>HANKOをつくる</a><br>
@@ -56,8 +62,8 @@ btn.onclick = () => {
 <a href=hankosignchk.html>HANKOを確認する（電子署名を確認する）</a><br>
 
 <hr>
-App: CC BY <a href=https://fukuno.jig.jp/3001>福野泰介の一日一創</a><br>
-Lib: <a href=https://github.com/rzcoder/node-rsa>rzcoder/node-rsa: Node.js RSA library</a> / <a href=https://qiita.com/poruruba/items/272bdc8f539728d5b076>Javascriptで公開鍵ペア生成・暗号化/復号をしてみた - Qiita</a><br>
+App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/canonchain/ed25519-wasm>ed25519-wasm</a> → <a href=https://github.com/code4sabae/js/blob/master/ed25519.js>ed25519.js ES module version</a><br>
 
 </body>
 <html>
