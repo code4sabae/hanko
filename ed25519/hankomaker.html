@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+
+<style>
+input[type="text"] {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
+}
+</style>
+
+<h1>HANKOを作る</h1>
+
+<button id=btn>HANKOを作る</button><br>
+<br>
+HANKO_ID（公開するハンコID）<br>
+<input type=text id=pub><br>
+
+HANKO_SEC (秘密にするハンコ鍵）<br>
+<input type=text id=pri><br>
+
+<script type="module">
+import Ed25519 from "https://taisukef.github.io/forge-es/lib/ed25519.js";
+import { hex } from "https://code4sabae.github.io/js/hex.js";
+
+btn.onclick = () => {
+  const keys = Ed25519.generateKeyPair();
+  
+  console.log('keys', keys);
+  const pubpem = hex.fromBin(keys.publicKey);
+  console.log("pubpem", pubpem);
+  pub.value = pubpem;
+
+  const pripem = hex.fromBin(keys.privateKey);
+  console.log("pripem", pripem);
+  pri.value = pripem;
+};
+
+</script>
+
+<br>
+次は？<br>
+<a href=hankosign.html target=_blank>HANKOを押す（メッセージに電子署名する）</a><br>
+
+<hr>
+<a href=hankomaker.html>HANKOをつくる</a><br>
+<a href=hankosign.html>HANKOを押す（メッセージに電子署名する）</a><br>
+<a href=hankosignchk.html>HANKOを確認する（電子署名を確認する）</a><br>
+
+<hr>
+App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/taisukef/forge-es>forge-es</a><br>
+
+</body>
+<html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+
+<style>
+input[type="text"] {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
+}
+textarea {
+  font-size: 80%;
+  font-family: monospace;
+  width: 50em;
+  height: 8em;
+}
+</style>
+
+<h1>HANKO</h1>
+
+<button id=btn1>HANKOを作る</button><br>
+<br>
+HANKO_ID（公開するハンコID）<br>
+<input type=text id=pub><br>
+
+HANKO_SEC (秘密にするハンコ鍵）<br>
+<input type=text id=pri><br>
+
+<hr>
+メッセージ<br>
+<textarea id=mes>
+</textarea><br>
+
+<button id=btn2>HANKOを押す</button><br>
+
+電子署名<br>
+<input type=text id=signedmes><br>
+
+<hr>
+<button id=btn3>電子署名をチェック</button><br>
+
+<br>
+<div id=verify></div><br>
+
+
+<script type="module">
+import Ed25519 from "https://taisukef.github.io/forge-es/lib/ed25519.js";
+import { hex } from "https://code4sabae.github.io/js/hex.js";
+
+btn1.onclick = () => {
+  const keys = Ed25519.generateKeyPair();
+  
+  console.log('keys', keys);
+  const pubpem = hex.fromBin(keys.publicKey);
+  console.log("pubpem", pubpem);
+  pub.value = pubpem;
+
+  const pripem = hex.fromBin(keys.privateKey);
+  console.log("pripem", pripem);
+  pri.value = pripem;
+};
+
+btn2.onclick = () => {
+  const privateKey = hex.toBin(pri.value);
+  const message = new TextEncoder('utf-8').encode(mes.value);
+  const sig = Ed25519.sign({ privateKey, message, encoding: "binary" });
+  console.log(sig);
+  signedmes.value = hex.fromBin(sig);
+};
+
+btn3.onclick = () => {
+  try {
+    const publicKey = hex.toBin(pub.value);
+    const message = new TextEncoder('utf-8').encode(mes.value);
+    const signature = hex.toBin(signedmes.value);
+    const result = Ed25519.verify({ signature, message, publicKey, encoding: "binary" });
+    verify.textContent = result ? "正しい電子署名と確認できました" : "ERROR! おかしな電子署名です";
+  } catch (e) {
+    console.log(e);
+    verify.textContent = "ERROR! 値が正しく設定されていません";
+  }
+};
+
+</script>
+
+<hr>
+<h2>HANKO ステップ毎に試すバージョン</h2>
+<a href=hankomaker.html>1. HANKOをつくる</a><br>
+<a href=hankosign.html>2. HANKOを押す（メッセージに電子署名する）</a><br>
+<a href=hankosignchk.html>3. HANKOを確認する（電子署名を確認する）</a><br>
+
+<hr>
+App: CC BY <a href=https://fukuno.jig.jp/3006>福野泰介の一日一創</a><br>
+Lib: <a href=https://github.com/taisukef/forge-es>forge-es</a><br>
+
+</body>
+<html>
