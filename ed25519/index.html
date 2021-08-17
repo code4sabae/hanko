@@ -1,22 +1,25 @@
 <!DOCTYPE html><html><head><meta charset="utf-8">
 
 <style>
+body {
+  margin: 2em;
+}
 input[type="text"] {
   font-size: 80%;
   font-family: monospace;
-  width: 50em;
+  width: 90%;
 }
 textarea {
   font-size: 80%;
   font-family: monospace;
-  width: 50em;
-  height: 8em;
+  width: 90%;
+  height: 9em;
 }
 </style>
 
 <h1>HANKO</h1>
 
-<button id=btn1>HANKOを作る</button><br>
+<button id=btn1>1. HANKOを作る</button><br>
 <br>
 HANKO_ID（公開するハンコID）<br>
 <input type=text id=pub><br>
@@ -29,13 +32,13 @@ HANKO_SEC (秘密にするハンコ鍵）<br>
 <textarea id=mes>
 </textarea><br>
 
-<button id=btn2>HANKOを押す</button><br>
+<button id=btn2>2. HANKOを押す</button><br>
 
 電子署名<br>
 <input type=text id=signedmes><br>
 
 <hr>
-<button id=btn3>電子署名をチェック</button><br>
+<button id=btn3>3. 電子署名をチェック</button><br>
 
 <br>
 <div id=verify></div><br>
